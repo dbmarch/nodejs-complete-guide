@@ -8,10 +8,6 @@ router.get('/add-product', productController.getAddProduct);
 
 
 // /admin/add-product => POST
-router.post('/add-product', productController.getAddProduct);
-
-
-// /admin/add-product => POST
 router.post('/add-product', productController.postAddProduct);
 
 exports.routes = router;

@@ -1,20 +1,25 @@
 
-
-const products = [];
+const { render } = require('pug');
+const Product = require('../models/products');
 
 
 exports.getAddProduct=(req, res, next) => {
-  // res.sendFile(path.join(rootDir, 'views', 'add-product.html'));
   res.render('add-product', { pageTitle: 'Add Product', path: '/admin/add-product', activeAddProduct: true, productCss: true , formCss: true });
 }
 
 exports.postAddProduct=(req, res, next) => {
-  products.push({ title: req.body.title });
+  const product = new Product(req.body.title);
+  product.save();
   res.redirect('/');
 }
 
-
 exports.getProducts=(req, res, next) => {
-  console.log('shop.js', products);
-  res.render('shop', { prods: products, pageTitle: 'Shop', path: '/', hasProducts: products.length > 0, activeShop: true, productCss: true });
+   Product.fetchAll((products) => {
+      renderShopPage(res, products);
+   });
 }
+
+ renderShopPage = (res, products) => {
+  console.log('shop.js', products);
+  res.render('shop', { prods: products, pageTitle: 'Shop', path: '/', hasProducts: products.length > 0, activeShop: true, productCss: true });  
+}  
