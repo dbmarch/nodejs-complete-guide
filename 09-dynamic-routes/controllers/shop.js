@@ -10,6 +10,18 @@ exports.getProducts = (req, res, next) => {
   });
 };
 
+exports.getProduct = (req, res, next) => {
+  const prodId = req.params.productId;
+  Product.findById(prodId, product => {
+    console.log (product);
+    res.render('shop/product-detail', {
+      product: product,
+      pageTitle: product ? product.title : 'Product Not Found', 
+      path: '/products'
+    });
+  });
+};
+
 exports.getIndex = (req, res, next) => {
   Product.fetchAll(products => {
     res.render('shop/index', {
@@ -27,6 +39,13 @@ exports.getCart = (req, res, next) => {
   });
 };
 
+exports.postCart = (req, res, next) => {
+  // Here you would normally handle adding the product to the cart
+  const prodId = req.body.productId;
+  console.log('Adding product to cart:', prodId);
+  res.redirect('/cart');
+}
+
 exports.getOrders = (req, res, next) => {
   res.render('shop/orders', {
     path: '/orders',
@@ -40,3 +59,4 @@ exports.getCheckout = (req, res, next) => {
     pageTitle: 'Checkout'
   });
 };
+
